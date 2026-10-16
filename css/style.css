@@ -1,6 +1,7 @@
 /* ==========================================================================
    1. GIAO DIỆN DI ĐỘNG (MOBILE-FIRST) - MẶC ĐỊNH
-   Không dùng media query cho phần này.
+   - Phương pháp ưu tiên thiết bị di động (Mobile-first, không dùng media query)
+   - Lưới 1 cột với khoảng cách 10px giữa các hàng và cột
    ========================================================================== */
 
 html {
@@ -23,11 +24,11 @@ header, footer {
     padding: 15px 0;
 }
 
-/* Cấu trúc Grid 1 cột cho Mobile */
+/* Sử dụng lưới một cột với khoảng cách 10px giữa các hàng và cột */
 .grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 10px; /* Khoảng cách 10px giữa hàng và cột */
+    gap: 10px;
 }
 
 figure {
@@ -39,11 +40,12 @@ figure {
     box-sizing: border-box;
 }
 
+/* Đảm bảo tất cả các hình ảnh có sự đồng đều về kích cỡ */
 figure img {
     width: 100%;
-    height: auto;
+    height: 250px; /* Chiều cao cố định giúp tất cả ảnh bằng nhau */
+    object-fit: cover; /* Cắt ảnh thông minh, giữ tỉ lệ không bị méo */
     display: block;
-    object-fit: cover;
 }
 
 figcaption {
@@ -53,57 +55,69 @@ figcaption {
 }
 
 /* ==========================================================================
-   2. MEDIA QUERY 1: TABLET VIEW (min-width: 772px)
+   2. TRUY VẤN PHƯƠNG TIỆN 1: TABLET VIEW (772px)
+   - Kích hoạt ở độ phân giải 772px
+   - Sử dụng lưới 2 cột
+   - Đặt bán kính đường viền cho các hình để tạo hình tròn
+   - Đặt hình cuối cùng sao cho chiếm cả 2 cột
    ========================================================================== */
 @media screen and (min-width: 772px) {
     .grid {
-        grid-template-columns: repeat(2, 1fr); /* Lưới 2 cột */
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    /* Đặt bán kính đường viền để tạo hình tròn */
+    /* Bán kính đường viền tạo hình tròn đồng đều */
     figure {
-        border-radius: 20px;
+        border-radius: 50%;
         overflow: hidden;
     }
 
     figure img {
+        height: auto;
+        aspect-ratio: 1 / 1; /* Tỉ lệ 1:1 kết hợp border-radius 50% tạo hình tròn hoàn hảo */
         border-radius: 50%;
-        aspect-ratio: 1 / 1; /* Giúp ảnh luôn tròn đều */
     }
 
-    /* Hình cuối cùng (thứ 7) chiếm cả 2 cột */
+    /* Đặt hình cuối cùng sao cho chiếm cả hai cột */
     figure:last-child {
         grid-column: span 2;
     }
 }
 
 /* ==========================================================================
-   3. MEDIA QUERY 2: LARGE SCREEN VIEW (min-width: 992px)
+   3. TRUY VẤN PHƯƠNG TIỆN 2: LARGE SCREEN VIEW (992px)
+   - Kích hoạt ở kích thước 992px
+   - Cứ mỗi 3 hình lại chiếm 2 cột
+   - Loại bỏ bán kính bo tròn khỏi tất cả các hình
+   - KHÔNG sử dụng thuộc tính max-width
    ========================================================================== */
 @media screen and (min-width: 992px) {
     .grid {
-        grid-template-columns: repeat(3, 1fr); /* Lưới 3 cột */
+        grid-template-columns: repeat(3, 1fr);
     }
 
-    /* Cứ mỗi 3 hình lại chiếm 2 cột (ví dụ: hình thứ 3, hình thứ 6) */
-    figure:nth-child(3n) {
-        grid-column: span 2;
-    }
-
-    /* Reset lại hình cuối cùng nếu nằm trong quy tắc màn hình lớn */
+    /* Reset vị trí hình cuối cùng khi lên màn hình lớn */
     figure:last-child {
         grid-column: auto;
     }
 
+    /* Cứ mỗi ba hình lại chiếm cả hai cột */
+    figure:nth-child(3n) {
+        grid-column: span 2;
+    }
+
     /* Loại bỏ bán kính bo tròn khỏi tất cả các hình */
-    figure, 
+    figure,
     figure img {
         border-radius: 0;
+        aspect-ratio: auto;
+        height: 250px; /* Trở lại chiều cao đồng đều */
     }
 }
 
 /* ==========================================================================
-   4. MEDIA QUERY 3: PREFERS-REDUCED-MOTION
+   4. TRUY VẤN PHƯƠNG TIỆN 3: PREFERS-REDUCED-MOTION
+   - Loại bỏ hành vi cuộn
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
     html {
@@ -117,7 +131,10 @@ figcaption {
 }
 
 /* ==========================================================================
-   5. MEDIA QUERY 4: DARK MODE (prefers-color-scheme: dark)
+   5. TRUY VẤN PHƯƠNG TIỆN 4: DARK MODE (prefers-color-scheme: dark)
+   - Đổi màu nền của các hình ảnh thành màu tối
+   - Đổi màu chữ của các số liệu sang màu nhạt hơn (màu vàng nhạt)
+   - Đổi màu viền của các hình thành màu đen
    ========================================================================== */
 @media (prefers-color-scheme: dark) {
     body {
@@ -132,7 +149,7 @@ figcaption {
         border: 2px solid #000000;
     }
 
-    /* Đổi màu chữ của các số liệu / mô tả sang màu nhạt hơn (vàng nhạt) */
+    /* Đổi màu chữ của các số liệu sang màu nhạt hơn (vàng nhạt) */
     figcaption {
         color: #fff59d;
     }
