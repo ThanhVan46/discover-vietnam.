@@ -1,0 +1,139 @@
+/* ==========================================================================
+   1. GIAO DIỆN DI ĐỘNG (MOBILE-FIRST) - MẶC ĐỊNH
+   Không dùng media query cho phần này.
+   ========================================================================== */
+
+html {
+    scroll-behavior: smooth;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f9;
+    color: #333333;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    padding: 15px;
+    margin: 0 auto;
+}
+
+header, footer {
+    text-align: center;
+    padding: 15px 0;
+}
+
+/* Cấu trúc Grid 1 cột cho Mobile */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px; /* Khoảng cách 10px giữa hàng và cột */
+}
+
+figure {
+    margin: 0;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 2px solid #dddddd;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+figcaption {
+    margin-top: 8px;
+    font-weight: bold;
+    color: #444444;
+}
+
+/* ==========================================================================
+   2. MEDIA QUERY 1: TABLET VIEW (min-width: 772px)
+   ========================================================================== */
+@media screen and (min-width: 772px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr); /* Lưới 2 cột */
+    }
+
+    /* Đặt bán kính đường viền để tạo hình tròn */
+    figure {
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    figure img {
+        border-radius: 50%;
+        aspect-ratio: 1 / 1; /* Giúp ảnh luôn tròn đều */
+    }
+
+    /* Hình cuối cùng (thứ 7) chiếm cả 2 cột */
+    figure:last-child {
+        grid-column: span 2;
+    }
+}
+
+/* ==========================================================================
+   3. MEDIA QUERY 2: LARGE SCREEN VIEW (min-width: 992px)
+   ========================================================================== */
+@media screen and (min-width: 992px) {
+    .grid {
+        grid-template-columns: repeat(3, 1fr); /* Lưới 3 cột */
+    }
+
+    /* Cứ mỗi 3 hình lại chiếm 2 cột (ví dụ: hình thứ 3, hình thứ 6) */
+    figure:nth-child(3n) {
+        grid-column: span 2;
+    }
+
+    /* Reset lại hình cuối cùng nếu nằm trong quy tắc màn hình lớn */
+    figure:last-child {
+        grid-column: auto;
+    }
+
+    /* Loại bỏ bán kính bo tròn khỏi tất cả các hình */
+    figure, 
+    figure img {
+        border-radius: 0;
+    }
+}
+
+/* ==========================================================================
+   4. MEDIA QUERY 3: PREFERS-REDUCED-MOTION
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto; /* Loại bỏ hành vi cuộn mượt */
+    }
+
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ==========================================================================
+   5. MEDIA QUERY 4: DARK MODE (prefers-color-scheme: dark)
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+
+    /* Đổi màu nền của các hình ảnh thành màu tối */
+    figure {
+        background-color: #222222;
+        /* Đổi màu viền của các hình thành màu đen */
+        border: 2px solid #000000;
+    }
+
+    /* Đổi màu chữ của các số liệu / mô tả sang màu nhạt hơn (vàng nhạt) */
+    figcaption {
+        color: #fff59d;
+    }
+}
